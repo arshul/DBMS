@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block title %}
+Messages
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/stylesheets/index.css">
+{% endblock %}
+
+{% block content %}
+
+{% include "loader.html" %}
+
+<div ng-controller="indexController">
+
+    <div class="data-table z-depth-3 card-panel hoverable">
+            <div class="filter-loading">
+                <div class="indeterminate"></div>
+            </div>
+        <div class="row">
+            <div class="input-field col s3">
+                <i class="material-icons prefix">search</i>
+                <input id="Search" type="text" ng-model="searchQuery">
+                <label for="Search">Search</label>
+            </div>
+
+            <div class="col s2">
+                <input id="vendor" type="radio" value="1" ng-model="filter.type" name="type">
+                <label for="vendor">Vendor</label>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+
+
+                <input id="client" type="radio" value="2" ng-model="filter.type" name="type">
+                <label for="client">Client</label>
+                
+                    
+            </div>
+            <div class="col s7">
+                <button class="btn waves-effect waves-light" ng-click="applyFilter()">Apply</button>
+                    
+            </div>
+                    
+        </div>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        
+        <br>
+        <br>
+        <table class="bordered striped">
+            <thead>
+                <tr>
+                    <th>agent type</th>
+                    <th>sender info(group)</th>
+                    
+                    <th>message</th>
+
+		    <th>datetime</th>
+                    <th>email</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="data in whatsappData | filter : searchQuery">
+                    <td class="whatsapp-type {[data.type]}"><span class="font-weight-600 new badge" ng-class="{[data.type]} == 1 ? 'red':'blue'" data-badge-caption="{[agentType[data.type]]}"></span></td>
+                    <td class="whatsapp-sender">{[data.sender]}({[data.channel]})</td>
+                    <td class="whatsapp-message">{[data.message]}</td>
+                    <td>{[data.datetime]} </td>
+
+                    <td class="whatsapp-email"> {[data.email]} </td>
+                </tr>
+            </tbody>
+        </table>
+        <div  id="load-more-data">
+            <div class="preloader-wrapper small">
+                <div class="spinner-layer spinner-green-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div><div class="gap-patch">
+                    <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
+{% block foot %}
+
+{{super()}}
+
+{% endblock %}
+{% block footJs %}
+<script src="/static/javascripts/index.js" ></script>
+
+{% endblock %}

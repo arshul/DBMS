@@ -1,0 +1,125 @@
+{% extends "layout.html" %} {% block css %}
+<link rel="stylesheet" href="/static/stylesheets/channel.css"> {% endblock %} {% block content %} {% include "loader.html" %}
+
+<div ng-controller="channelController">
+
+    <div class="data-table z-depth-3 card-panel hoverable">
+
+        <div class="row">
+            <div class="col m8" style="background: #0000002b;">
+                <i class="material-icons">search</i>
+                <input style="width:50%;margin: -10px 0 0 0;" type="text" ng-model="channelSearch">
+                <span ng-init="toggleClass = false">
+                    <a href="javascript:void(0)" class="btn-flat" ng-class="{'btn-active' : toggleClass}" ng-click="toggleChannels(true);toggleClass = true">groups</a>
+                    <a href="javascript:void(0)" class="btn-flat" ng-class="{'btn-active' : !toggleClass}" ng-click="toggleChannels(false);toggleClass = false">persons</a> 
+                </span>
+                <span ng-init="toggleCheckbox = false">
+                    <a href="javascript:void(0)" class="btn-flat"  ng-click="toggleCheckbox = true" ng-show="!toggleCheckbox"  ><i class="material-icons">file_download</i> csv</a>
+                    <a href="javascript:void(0)" class="btn-flat"  ng-click="toggleCheckbox = false" ng-show="toggleCheckbox"><i class="material-icons">close</i></a>
+                    <a href="javascript:void(0)" class="btn-flat"  ng-click="downloadContactsAsCsv()" ng-show="toggleCheckbox"><i class="material-icons">done</i></a>
+
+                </span>
+                <div style="margin-top: 3px; overflow-x: auto">
+                    <span><i class="material-icons">label</i></span>
+                    <div class="chip" ng-repeat="tag in tagsData" ng-click="getChannelsByTagName(tag.id)">
+                        {[tag.name]}
+                    </div>
+                </div>
+                <div class="divider teal"></div>
+                <div class="row" style="height:100vh;overflow-y: scroll;" id="channelContainer">
+                    <div ng-repeat="channel in channelData | filter : channelSearch | orderBy : '-message_count'" class="col s12 m3">
+                        <div class="card grey lighten-3  fixed-card-height" >
+                            <div class="card-content">
+                                <input type="checkbox" checklist-model="csvContacts.list" checklist-value="channel" ng-disable="!toggleCheckbox" ng-show="toggleCheckbox" style="opacity:1;pointer-events: auto;">
+                                <span class="card-title" style="font-weight:400;cursor: pointer" ng-click="!toggleCheckbox ? showMessage(channel):''">{[channel.name || channel.number]}</span>
+                                <div>
+                                    <span><i class="material-icons">face</i> : </span>
+                                    <!-- Last Active goes here-->
+                                    <span class="last-active" ng-if="channel.last_active">{[timeDifference(channel.last_active)]}</span>
+                                    <span class="last-active" ng-if="!channel.last_active">None</span>
+                                </div>
+
+                                <!-- Group Count goes here-->
+                                <span><i class="material-icons">group</i> : </span>
+
+                                <!-- Message Sent Count goes here-->
+                                <span><i class="material-icons">send</i> : {[channel.message_count]}</span>
+
+                                <!--<span ng-click="showTagInput= true">Add tag <i class="material-icons">add_circle_outline</i></span>-->
+                                <input placeholder="add tag" type="text" ng-model="newTag[channel.id]" class="browser-default" style="font-size: 10px;width: 80%;padding:0"> <i ng-click="addTag(channel.id)" class="material-icons">add_circle_outline</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="load-more-data">
+                        <div class="preloader-wrapper small ">
+                            <div class="spinner-layer spinner-green-only">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="col m4">
+                <div class="message-container">
+                    <span class="chat-header username" >{[chat.name]} <i class="material-icons">mode_edit</i></span>
+                    <span class="right">
+                        <i class="material-icons">search</i>
+                        <input style="width:85%;margin: -10px 0 0 0;" type="text" ng-model="chatSearch">
+                    </span>
+                    <div ng-class="chat.name ? 'userContactDetails' : ''">
+                        <span ng-if="chat.number">{[chat.number]} <i class="material-icons">mode_edit</i></span>
+                        <span ng-if="chat.email"><span class="dot">•</span> {[chat.email]} <i class="material-icons">mode_edit</i></span>
+                        <span ng-if="chat.website"><span class="dot">•</span> {[chat.website]} <i class="material-icons">mode_edit</i></span>
+                    </div>
+                    <div style="height:99vh;width:100%;overflow-y: scroll;">
+                        <div id="load-more-message">
+                            <div class="preloader-wrapper small active removeElement">
+                                <div class="spinner-layer spinner-green-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-container" ng-repeat="message in messageData | filter : chatSearch">
+                            <span class="line-clamp">{[message.text]}</span>
+                            <a href="javascript:void(0);" id="seeMore" ng-click="removeClass($event)">see more</a>
+                            <div class="divider teal"></div>
+                            <div>
+                                <span>{[groupData[message.message_states[message.message_states.length - 1].id].name]}  </span>
+                                <span>{[message.message_states[message.message_states.length - 1].sent_date*1000 | date : "medium"]}</span>
+                                <span ng-if="(message.message_states.length - 2) > 0">({[message.message_states.length - 2]} more)</span>
+                            </div>
+
+                        </div>
+
+                        <span ng-if="!message.text && chat.name" >No Message Found!!</span>
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+{% endblock %} {% block foot %} {{super()}} {% endblock %} {% block footJs %}
+<script src="/static/javascripts/channel.js"></script> {% endblock %}

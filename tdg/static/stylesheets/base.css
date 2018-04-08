@@ -1,0 +1,49 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.background{
+    position :absolute;
+    width: 100vw;
+    height: 100vh;
+    background: #fff;
+    z-index: -1;
+    top: 0;
+
+
+}
+nav{
+    height: 35px;
+    line-height: 35px;
+}
+
+nav ul a {
+    font-size:12px;
+
+
+}
+
+.navbar-fixed {
+    height: 20px;
+}
+.background-head{
+    position: relative;
+    width: 100vw;
+    height: 25vh;
+    background:#009688 ;
+    z-index: -1;
+    top: 0;
+    
+}
+footer{
+    position: relative;
+    bottom: -30px;
+
+}
+/* .navbar-fixed{
+    top:0;
+}
+nav{
+    z-index: 200;
+} */

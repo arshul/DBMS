@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}Cab Booking System{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/stylesheets/pricing.css">
+{% endblock %}
+
+{% block content %}
+
+{#    {% include "loader.html" %}#}
+    <div ng-controller="priceController" >
+
+        <div class="main-container z-depth-5 card-panel hoverable">
+
+            <div class="row">
+                <div class="col m12">
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <select ng-model="cabData.source_id" ng-change="fetchDestination()">
+                                <option disabled value>--Source Location--</option>
+                                <option class="first-caps" value="{[location.source.id]}" ng-repeat="location in locationData"  >{[capitalizeFirstLetter(location.source.name)]}</option>
+                            </select>
+                        </div>
+
+                        <div class="input-field col s4">
+                            <select ng-model="cabData.destination_id">
+                                <option disabled value>--Destination Location--</option>
+                                <option value="{[location.destination.id]}" ng-repeat="location in destData">{[capitalizeFirstLetter(location.destination.name)]}</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s4">
+                            <select  ng-model="cabData.cab_cat">
+                                <option selected disabled hidden style='display: none' value>--Cab Type--</option>
+                                <option value="{[cat]}" ng-repeat="cat in cabCategory">{[capitalizeFirstLetter(cat)]}</option>
+                                <option style='display: none' value>All</option>
+                            </select>
+                        </div>
+                    <div class="input-field col s12" align="middle">
+                        <button class="waves-effect waves-teal btn pulse" ng-click="submitCabData()" >Submit</button>
+                    </div>
+                    </div>
+                </div>
+                <div align="middle">
+                    <h4>{[capitalizeFirstLetter(Route[0].source.name)]} TO {[capitalizeFirstLetter(Route[0].destination.name)]}</h4>
+                </div>
+                <div class="col s12">
+                    <table class="centered">
+                        <thead>
+                            <th>Cab</th>
+                            <th>Price</th>
+
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="route in Route">
+                                <td>{[capitalizeFirstLetter(route.cab_category)]}</td>
+                                <td>{[route.price]}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block foot %}
+
+{{super()}}
+
+{% endblock %}
+{% block footJs %}
+<script src="/static/javascripts/pricing.js" ></script>
+
+
+{% endblock %}

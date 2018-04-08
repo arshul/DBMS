@@ -1,0 +1,25 @@
+SQLALCHEMY_DATABASE_NAME='tdg_whatsapp'
+SQLALCHEMY_DATABASE_USER='postgres'
+SQLALCHEMY_DATABASE_PASSWORD='root'
+SQLALCHEMY_DATABASE_URI= 'postgresql://root@localhost/tdg_wp'
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+# change this variable value to your domain name
+SHELL_DOMAIN = 'http://demo4469839.mockable.io'
+
+# if you want to send msg then set it to true
+SEND_MSG=False
+# Send Acknowledge messages then set it true
+SEND_ACKNOWLEDGEMENT=False
+#sender_id(1:EAGLE,2:WOLF,3:TRANSPORT,4:PACKAGE)
+SENDER_ID=1
+
+
+PORT = 5000
+HOST = '127.0.0.1'
+DEBUG = True
+RELOAD = True
+TIMEZONE = 'Etc/UTC'
+
+RELATIONS_HOST= 'http://127.0.0.1:5000'
+

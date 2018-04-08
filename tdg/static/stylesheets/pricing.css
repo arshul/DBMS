@@ -1,0 +1,17 @@
+.main-container{
+    margin: auto;
+    /* box-shadow: 0 10px 8px 15px rgba(0, 0, 0, 0.2); */
+    z-index: 1;
+    background: #fff;
+    margin-top: 25px;
+    width: 95%;
+    padding:10px;
+    border-radius: 10px;
+}
+
+.loader{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%)
+}

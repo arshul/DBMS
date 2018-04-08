@@ -1,0 +1,88 @@
+
+.data-table{
+    margin: auto;
+    /* box-shadow: 0 10px 8px 15px rgba(0, 0, 0, 0.2); */
+    z-index: 1;
+    background: #fff;
+    margin-top: 25px;
+    width: 95%;
+    padding:10px;
+    border-radius: 10px;
+}
+table{
+    border-collapse: collapse;
+    display: block;
+}
+td , th{
+
+    /* border: 1px solid #000; */
+    border: 1px solid #ddd;
+    padding:15px 5px;
+
+}
+.tracking-msg{
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    height:250px;
+    width: 450px;
+    
+}
+.whatsapp-email{
+    width:15% ;
+}
+.whatsapp-sender{
+    width:22% ;
+}
+.whatsapp-type{
+    width:6%;
+    text-align: center;
+}
+.vendor{
+    background: rgba(255, 87, 34, 0.68);
+    color: #ffffff;
+    font-weight: 600;
+    
+}
+.client{
+
+    background: #03A9F4;
+    color: #fcfcfc;
+   
+}
+
+.loader{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%)
+}
+.font-weight-600{
+     font-weight: 600 !important;
+}
+.msg-summary{
+   
+    max-width:650px;
+    
+    height: 230px;
+    overflow-y: hidden;
+    display: block;
+}
+.tracking-send_to{
+    white-space: nowrap;
+}
+.show {
+    /* overflow: visible; */
+    height: auto;
+}
+.pointer{
+    cursor: pointer;
+}
+
+.error{
+    background: #ff3838;
+    bottom: 20px;
+    top:auto;
+}
+.group-msg-container{
+    width: 170px;
+}
