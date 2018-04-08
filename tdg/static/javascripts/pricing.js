@@ -10,16 +10,7 @@ app.controller("priceController", ["$scope", "$http", function ($scope, $http) {
   $scope.capitalizeFirstLetter = function(string) {
     if(!string)return;
     return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-  // $http({
-  //     method: "GET",
-  //      url: api_url.route
-  // }).then((response) => {
-  //       $scope.routeData = response.data.result;
-  //     //   loader.classList.remove("active");
-  //
-  // }, (response) => {});
+};
 
   $http({
         method: "GET",
@@ -27,7 +18,7 @@ app.controller("priceController", ["$scope", "$http", function ($scope, $http) {
   }).then((response) => {
         $scope.locationData = response.data.result;
         console.log(response.data);
-      //   loader.classList.remove("active");
+        loader.classList.remove("active");
         $scope.locationObject = createStructure($scope.locationData);
         setTimeout(() => {
           $('select').material_select();
@@ -43,7 +34,7 @@ $scope.fetchDestination = function(){
         url: api_url.destination+"?source_id="+$scope.cabData.source_id
     }).then((response) => {
         $scope.destData = response.data.result;
-      //   loader.classList.remove("active");
+        loader.classList.remove("active");
         $scope.locationObject = createStructure($scope.locationData);
         setTimeout(() => {
           $('select').material_select();
@@ -65,10 +56,8 @@ $scope.fetchDestination = function(){
     }).then((response) => {
         Materialize.toast("Submitted", 800);
         $scope.Route = response.data.result;
-        console.log(response.data.result);
-        $scope.cabData={};
+        loader.classList.remove("active");
     },(response) => {
-                console.log(response);
                 Materialize.toast("Error occurs!", 800);
         });
 

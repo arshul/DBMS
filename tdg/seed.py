@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from flask_script import Command
-from tdg.constants.channels import *
+from tdg.constants.constants import *
 from bs4 import BeautifulSoup
 from tdg.model.model import Route, Location
 import requests
 import time
 import re
 from selenium import webdriver
-from tdg.constants.channels import URL
+from tdg.constants.constants import URL
 
 
 class SeedData(Command):
