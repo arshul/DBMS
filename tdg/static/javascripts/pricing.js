@@ -1,5 +1,5 @@
 app.controller("priceController", ["$scope", "$http", function ($scope, $http) {
-  var loader = document.getElementsByClassName("preloader-wrapper")[0];
+//   var loader = document.getElementsByClassName("preloader-wrapper")[0];
 
   $scope.cabData = {'cab_category':null};
   $scope.cabCategory =[
@@ -18,7 +18,7 @@ app.controller("priceController", ["$scope", "$http", function ($scope, $http) {
   }).then((response) => {
         $scope.locationData = response.data.result;
         console.log(response.data);
-        loader.classList.remove("active");
+        // loader.classList.remove("active");
         $scope.locationObject = createStructure($scope.locationData);
         setTimeout(() => {
           $('select').material_select();
@@ -34,7 +34,7 @@ $scope.fetchDestination = function(){
         url: api_url.destination+"?source_id="+$scope.cabData.source_id
     }).then((response) => {
         $scope.destData = response.data.result;
-        loader.classList.remove("active");
+        // loader.classList.remove("active");
         $scope.locationObject = createStructure($scope.locationData);
         setTimeout(() => {
           $('select').material_select();
@@ -56,7 +56,7 @@ $scope.fetchDestination = function(){
     }).then((response) => {
         Materialize.toast("Submitted", 800);
         $scope.Route = response.data.result;
-        loader.classList.remove("active");
+        // loader.classList.remove("active");
     },(response) => {
                 Materialize.toast("Error occurs!", 800);
         });
