@@ -44,9 +44,18 @@
                     </div>
                 </div>
                 <div ng-hide="!Route" align="middle">
-                    <h4>{[capitalizeFirstLetter(Route[0].source.name)]} TO {[capitalizeFirstLetter(Route[0].destination.name)]}</h4>
+                    <h4>{[capitalizeFirstLetter(Route[0].source.name)]} - {[capitalizeFirstLetter(Route[0].destination.name)]}</h4>
                     <div class="col s12">
-                        <table class="centered">
+                        <div class="row">
+                            <div ng-repeat="route in Route" class="card col s4">
+                                <div class="card-image">
+                                    <img ng-src="{[cabIcons[route.cab_category]]}" style="width:360px;height:250px">
+                                </div>
+                                <h4 class="card-title black-text">{[capitalizeFirstLetter(route.cab_category)]}</h4><span class="red-text">&nbsp;&#8377;{[route.price]}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- <table class="centered">
                             <thead>
                                 <th>Cab</th>
                                 <th>Price</th>
@@ -58,7 +67,7 @@
                                     <td>{[route.price]}</td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table> -->
                     </div>
                 </div>
                 <div ng-hide="Route" align="middle">

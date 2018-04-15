@@ -6,6 +6,11 @@ app.controller("priceController", ["$scope", "$http", function ($scope, $http) {
         'sedan',
         'suv'
    ];
+   $scope.cabIcons={
+       "hatchback":"http://cdn1.carbuyer.co.uk/sites/carbuyer_d7/files/car_images/renault-megane.jpg",
+       "sedan": "https://imgd.aeplcdn.com/1280x720/cw/ec/28343/Lexus-ES-Right-Front-Three-Quarter-93381.jpg?wm=0&q=100",
+       "suv": "https://www.drivespark.com/car-image/540x400x80/car/6054634-tata_nexon.jpg"
+   };
    $http({
         method: "GET",
         url: api_url.route,
