@@ -38,28 +38,49 @@
                             </select>
                         </div>
                     <div class="input-field col s12" align="middle">
-                        <button class="waves-effect waves-teal btn pulse" ng-click="submitCabData()" >Submit</button>
+                        <button class="waves-effect waves-teal btn pulse" ng-click="submitCabData()" >Submit<i class="material-icons right">send</i></button>
+                           
                     </div>
                     </div>
                 </div>
-                <div align="middle">
+                <div ng-hide="!Route" align="middle">
                     <h4>{[capitalizeFirstLetter(Route[0].source.name)]} TO {[capitalizeFirstLetter(Route[0].destination.name)]}</h4>
+                    <div class="col s12">
+                        <table class="centered">
+                            <thead>
+                                <th>Cab</th>
+                                <th>Price</th>
+    
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="route in Route">
+                                    <td>{[capitalizeFirstLetter(route.cab_category)]}</td>
+                                    <td>{[route.price]}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="col s12">
-                    <table class="centered">
-                        <thead>
-                            <th>Cab</th>
-                            <th>Price</th>
-
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="route in Route">
-                                <td>{[capitalizeFirstLetter(route.cab_category)]}</td>
-                                <td>{[route.price]}</td>
-
-                            </tr>
-                        </tbody>
-                    </table>
+                <div ng-hide="Route" align="middle">
+                    <h4 class="teal-text darken-2">Available Cabs</h4>
+                    <div class="col s12">
+                        <table class="centered">
+                            <thead class="teal-text">
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Cab Category</th>
+                                <th>Price</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="route in allRoutes | orderBy:'source.name'">
+                                    <td>{[capitalizeFirstLetter(route.source.name)]}</td>
+                                    <td>{[capitalizeFirstLetter(route.destination.name)]}</td>
+                                    <td>{[capitalizeFirstLetter(route.cab_category)]}</td>
+                                    <td>{[route.price]}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -68,29 +89,30 @@
                 <h4>Create New Route</h4>
                 <div class="row">
                     <div class="input-field col s4 offset-s2">
-                        <input placeholder="From City" ng-model="routePostData.source" type="text" class="validate">
+                        <input required placeholder="From City" ng-model="routePostData.source" type="text" class="validate">
                     </div>
                     <div class="input-field col s4">
-                        <input placeholder="To City" ng-model="routePostData.destination" type="text" class="validate">
+                        <input required placeholder="To City" ng-model="routePostData.destination" type="text" class="validate">
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s4">
                         <label>Hatchback Price</label>
-                        <input placeholder="Rupees" ng-model="routePostData.price.hatchback" type="text" class="validate" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <input ng-required='!(routePostData.price.sedan||routePostData.price.suv)' placeholder="Rupees" ng-model="routePostData.price.hatchback" type="text" class="validate" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                     </div>
                     <div class="input-field col s4">
                         <label>Sedan Price</label>
-                        <input placeholder="Rupees" ng-model="routePostData.price.sedan" type="text" class="validate" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <input ng-required='!(routePostData.price.hatchback||routePostData.price.suv)' placeholder="Rupees" ng-model="routePostData.price.sedan" type="text" class="validate" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                     </div>
                     <div class="input-field col s4">
                         <label>SUV Price</label>
-                        <input placeholder="Rupees" ng-model="routePostData.price.suv" type="text" class="validate" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                        <input ng-required='!(routePostData.price.sedan||routePostData.price.hatchback)' placeholder="Rupees" ng-model="routePostData.price.suv" type="text" class="validate" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button ng-click="createRoute()" class="btn modal-action waves-effect waves-green">Submit</button>
+                <button class="btn modal-close grey lighten-1">Close</button>
+                <button ng-click="createRoute()" class="btn modal-action waves-effect waves-green">Submit<i class="material-icons right">send</i></button>
             </div>
         </div>
     </div>
@@ -102,6 +124,6 @@
 {% endblock %}
 {% block footJs %}
 <script src="/static/javascripts/pricing.js" ></script>
-    <span>&copy; Copyright 2018 by <a href="http://www.mdarshul.me">Mohd Arshul Mansoori</a></span>
+    <span>&copy; Copyright 2018 by <a target="_blank" href="https://www.linkedin.com/in/arshul/">Mohd Arshul Mansoori</a></span>
     <span>| All Right Reserved</span>
 {% endblock %}

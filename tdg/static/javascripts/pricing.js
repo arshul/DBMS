@@ -7,6 +7,15 @@ app.controller("priceController", ["$scope", "$http", function ($scope, $http) {
         'suv'
    ];
    $http({
+        method: "GET",
+        url: api_url.route,
+    }).then((response) => {
+        $scope.allRoutes = response.data.result;
+        console.log($scope.allRoutes);
+    }, (response) => {
+        Materialize.toast("Something Went Wrong!!", 800);
+    });
+   $http({
        method: "GET",
        url: api_url.destination
     }).then((response) => {
@@ -46,9 +55,10 @@ app.controller("priceController", ["$scope", "$http", function ($scope, $http) {
             data: $scope.routePostData
         }).then((response) => {
             Materialize.toast("Submitted", 800);
+            $('.modal').modal('hide');
             $scope.Route = response.data.result;
         },(response) => {
-            Materialize.toast("Error occurs!", 800);
+            Materialize.toast("Fill the fields correctly", 800);
         });
     },
    $(document).ready(function(){
