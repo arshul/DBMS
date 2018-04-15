@@ -15,3 +15,8 @@
     left: 50%;
     transform: translate(-50% , -50%)
 }
+.modal {
+    width: 75% !important ;
+    min-height: 350px !important ; 
+    overflow-y: hidden !important
+}  

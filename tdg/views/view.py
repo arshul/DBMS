@@ -15,6 +15,7 @@ def pricing_data():
 def pricing():
     if request.method == 'POST':
         data = request.get_json()
+        print(data)
         resp = add_pricing(data)
         return resp
     else:
