@@ -1,0 +1,170 @@
+{% extends "layout.html" %}
+
+{% block title %}Cab Management System{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/stylesheets/pricing.css">
+{% endblock %}
+
+{% block content %}
+
+{#    {% include "loader.html" %}#}
+    <div ng-controller="priceController" >
+
+        <div class="main-container z-depth-5 card-panel hoverable">
+            <div>
+                <button data-target="addRoute" class="btn modal-close modal-trigger">Create New</button>
+            </div>
+            <div class="row">
+                <div class="col m12">
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <select ng-model="cabData.source_id" ng-change="fetchDestination()">
+                                <option disabled value>--Source Location--</option>
+                                <option value="{[location.source.id]}" ng-repeat="location in locationData"  >{[capitalizeFirstLetter(location.source.name)]}</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s4">
+                            <select ng-model="cabData.destination_id">
+                                <option disabled value>--Destination Location--</option>
+                                <option value="{[location.destination.id]}" ng-repeat="location in destData">{[capitalizeFirstLetter(location.destination.name)]}</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s4">
+                            <select  ng-model="cabData.cab_cat">
+                                <option selected disabled hidden style='display: none' value>--Cab Type--</option>
+                                <option value="{[cat]}" ng-repeat="cat in cabCategory">{[capitalizeFirstLetter(cat)]}</option>
+                                <option style='display: none' value>All</option>
+                            </select>
+                        </div>
+                    <div class="input-field col s12" align="middle">
+                        <button class="waves-effect waves-teal btn pulse" ng-click="submitCabData()" >Submit<i class="material-icons right">send</i></button>
+                           
+                    </div>
+                    </div>
+                </div>
+                <div ng-hide="!Route" align="middle">
+                    <h4>{[capitalizeFirstLetter(Route[0].source.name)]} - {[capitalizeFirstLetter(Route[0].destination.name)]}</h4>
+                    <div class="col s12">
+                        <div class="row">
+                            <div ng-repeat="route in Route" class="card col s4">
+                                <div class="card-image">
+                                    <img ng-src="{[cabIcons[route.cab_category]]}" style="width:360px;height:250px">
+                                </div>
+                                <h4 class="card-title black-text">{[capitalizeFirstLetter(route.cab_category)]}</h4>
+                                <h5 class="red-text darken-2">&nbsp;&#8377;{[route.price]}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-hide="Route" align="middle">
+                    <h4 class="teal-text darken-2">Available Cabs</h4>
+                    <div class="col s12">
+                        <table class="centered">
+                            <thead class="teal-text">
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Cab Category</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="route in allRoutes | orderBy:'source.name'">
+                                    <td>{[capitalizeFirstLetter(route.source.name)]}</td>
+                                    <td>{[capitalizeFirstLetter(route.destination.name)]}</td>
+                                    <td>{[capitalizeFirstLetter(route.cab_category)]}</td>
+                                    <td>{[route.price]}</td>
+                                    <td>
+                                        <button ng-click="edit(route)" data-target="edit" class="btn-floating modal-trigger grey lighten-1">
+                                            <i class="material-icons">edit</i>
+                                        </button> &nbsp;
+                                        <button ng-click="del(route.id)" data-target="del" class="btn-floating modal-trigger red darken-2">
+                                            <i class="material-icons">delete</i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="addRoute" class="modal">
+            <div class="modal-content">
+                <h4>Create New Route</h4>
+                <div class="row">
+                    <div class="input-field col s4 offset-s2">
+                        <input required placeholder="From City" ng-model="routePostData.source" type="text" class="validate">
+                    </div>
+                    <div class="input-field col s4">
+                        <input required placeholder="To City" ng-model="routePostData.destination" type="text" class="validate">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s4">
+                        <label>Hatchback Price</label>
+                        <input ng-required='!(routePostData.price.sedan||routePostData.price.suv)' placeholder="Rupees" ng-model="routePostData.price.hatchback" type="text" class="validate" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    </div>
+                    <div class="input-field col s4">
+                        <label>Sedan Price</label>
+                        <input ng-required='!(routePostData.price.hatchback||routePostData.price.suv)' placeholder="Rupees" ng-model="routePostData.price.sedan" type="text" class="validate" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    </div>
+                    <div class="input-field col s4">
+                        <label>SUV Price</label>
+                        <input ng-required='!(routePostData.price.sedan||routePostData.price.hatchback)' placeholder="Rupees" ng-model="routePostData.price.suv" type="text" class="validate" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-close grey lighten-1">Close</button>
+                <button ng-click="createRoute()" class="btn modal-action waves-effect waves-green">Submit<i class="material-icons right">send</i></button>
+            </div>
+        </div>
+        <div id="del" class="modal del-modal">
+            <div class="modal-content">
+                <h4>Confirm Delete</h4>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-close grey lighten-1">Cancel</button>
+                <button ng-click="delete()" class="btn modal-action modal-close red darken-2">Delete<i class="material-icons right">delete_forever</i></button>
+            </div>
+        </div>
+        <div id="edit" class="modal edit-modal">
+            <div class="modal-content">
+                <h4>Edit Route</h4>
+                <div class="row">
+                    <div class="input-field col s4 offset-s2">
+                        <label> From</label>
+                        <input required placeholder="From City" ng-model="editData.source.name" type="text" class="validate">
+
+                    </div>
+                    <div class="input-field col s4">
+                        <label> To</label>
+                        <input required placeholder="To City" ng-model="editData.destination.name" type="text" class="validate">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field center col s4 offset-s4">
+                        <label> Price</label>
+                        <input required placeholder="Rupees" ng-model="editData.price" type="text" class="validate">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn modal-close grey lighten-1">Cancel</button>
+                <button ng-click="update()" class="btn modal-action modal-close green lighten-1">Update<i class="material-icons right"></i></button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block foot %}
+
+{{super()}}
+
+{% endblock %}
+{% block footJs %}
+<script src="/static/javascripts/pricing.js" ></script>
+    <span>&copy; Copyright 2018 by <a target="_blank" href="https://www.linkedin.com/in/arshul/">Mohd Arshul Mansoori</a></span>
+    <span>| All Right Reserved</span>
+{% endblock %}

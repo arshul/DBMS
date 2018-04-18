@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from tdg import app, db
-# from tdg.cron import Cron
+from dbms import app, db
+# from dbms.cron import Cron
 from flask_script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
-from tdg.seed import SeedData
+from dbms.seed import SeedData
 
 manager = Manager(app)
 migrate = Migrate(app, db)

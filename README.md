@@ -1,5 +1,5 @@
 #=======
-**Tdg **
+**DBMS**
 #=======
 
 ## **Technologies**
@@ -14,13 +14,8 @@ From inside the repository, run:
 
     pip install -r requirements/default.txt
 
-    python manage.py runserver
-
     python manage.py db upgrade
 
     python manage.py seed
 
-    python manage.py db migrate
-
-    python manage.py cron -n WhatsappData
-
+    python manage.py runserver
